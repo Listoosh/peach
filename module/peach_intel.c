@@ -561,6 +561,8 @@ static long peach_ioctl(struct file *file,
 		);
 		printk("Guest RFLAGS = 0x%llx\n", vmcs_field_value);
 
+		// --------------------------------------------------------------------------------
+
 		vmcs_field = 0x00000C00; // 设置host es段选择子
 		asm volatile (
 			"movq %%es, %0\n\t" // 取出host当前es值（这里是整个取出）
@@ -999,9 +1001,6 @@ static long peach_ioctl(struct file *file,
 		);
 		printk("vmlaunch = %d\n", ret1);
 
-		/* 
-		这一步主要是通过VM_EXIT_REASON判断虚拟机退出的原因
-		 */
 		vmcs_field = 0x00004402;
 		asm volatile (
 			"vmread %1, %0\n\t" // 读取VMCS中VM_EXIT_REASON域的值
